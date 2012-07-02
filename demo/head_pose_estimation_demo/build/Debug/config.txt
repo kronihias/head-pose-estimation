@@ -1,0 +1,16 @@
+#Path_to_trees_and_prefix
+trees/tree
+#Trees_no
+10
+#max_variance
+800
+#clustering_radius
+0.95
+#MS_radius
+5
+#Stride
+5
+#MAX_distance
+1500
+#Head_Trheshold
+400

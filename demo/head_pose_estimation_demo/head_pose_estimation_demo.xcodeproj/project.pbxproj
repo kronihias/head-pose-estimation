@@ -1,0 +1,283 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		392A3911143B35D300283A9F /* gl_camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 392A390F143B35D300283A9F /* gl_camera.cpp */; };
+		392A3912143B35D300283A9F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 392A3910143B35D300283A9F /* main.cpp */; };
+		392A3917143B35E200283A9F /* CRForestEstimator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 392A3913143B35E200283A9F /* CRForestEstimator.cpp */; };
+		392A3918143B35E200283A9F /* CRTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 392A3915143B35E200283A9F /* CRTree.cpp */; };
+		392A391B143B35F400283A9F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 392A391A143B35F400283A9F /* GLUT.framework */; };
+		3992E3C8144C988B005CBCA7 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3992E3C7144C988B005CBCA7 /* OpenGL.framework */; };
+		39DCC886158C885C0055DF9F /* liblo.7.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DCC885158C885C0055DF9F /* liblo.7.dylib */; };
+		39DCC888158C885C0055DF9F /* libopencv_core.2.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DCC887158C885C0055DF9F /* libopencv_core.2.3.1.dylib */; };
+		39DCC88A158C885C0055DF9F /* libopencv_imgproc.2.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DCC889158C885C0055DF9F /* libopencv_imgproc.2.3.1.dylib */; };
+		39DCC88C158C885C0055DF9F /* libOpenNI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DCC88B158C885C0055DF9F /* libOpenNI.dylib */; };
+		8DD76F6A0486A84900D96B5E /* head_pose_estimation_demo.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* head_pose_estimation_demo.1 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8DD76F690486A84900D96B5E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				8DD76F6A0486A84900D96B5E /* head_pose_estimation_demo.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		392A390F143B35D300283A9F /* gl_camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gl_camera.cpp; path = ../gl_camera.cpp; sourceTree = SOURCE_ROOT; };
+		392A3910143B35D300283A9F /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../main.cpp; sourceTree = SOURCE_ROOT; };
+		392A3913143B35E200283A9F /* CRForestEstimator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CRForestEstimator.cpp; path = ../../CRForestEstimator.cpp; sourceTree = SOURCE_ROOT; };
+		392A3914143B35E200283A9F /* CRForestEstimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CRForestEstimator.h; path = ../../CRForestEstimator.h; sourceTree = SOURCE_ROOT; };
+		392A3915143B35E200283A9F /* CRTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CRTree.cpp; path = ../../CRTree.cpp; sourceTree = SOURCE_ROOT; };
+		392A3916143B35E200283A9F /* CRTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CRTree.h; path = ../../CRTree.h; sourceTree = SOURCE_ROOT; };
+		392A391A143B35F400283A9F /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		3992E3C7144C988B005CBCA7 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		39DCC885158C885C0055DF9F /* liblo.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblo.7.dylib; path = "mac-libs/liblo.7.dylib"; sourceTree = SOURCE_ROOT; };
+		39DCC887158C885C0055DF9F /* libopencv_core.2.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.2.3.1.dylib; path = "mac-libs/libopencv_core.2.3.1.dylib"; sourceTree = SOURCE_ROOT; };
+		39DCC889158C885C0055DF9F /* libopencv_imgproc.2.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.2.3.1.dylib; path = "mac-libs/libopencv_imgproc.2.3.1.dylib"; sourceTree = SOURCE_ROOT; };
+		39DCC88B158C885C0055DF9F /* libOpenNI.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libOpenNI.dylib; path = "mac-libs/libOpenNI.dylib"; sourceTree = SOURCE_ROOT; };
+		39E6FA261449781600E82F68 /* gl_camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = gl_camera.hpp; path = ../../../_projekte/kinect/head_pose_estimation/demo/gl_camera.hpp; sourceTree = SOURCE_ROOT; };
+		8DD76F6C0486A84900D96B5E /* head_pose_estimation_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = head_pose_estimation_demo; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6859E8B029090EE04C91782 /* head_pose_estimation_demo.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = head_pose_estimation_demo.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76F660486A84900D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				392A391B143B35F400283A9F /* GLUT.framework in Frameworks */,
+				3992E3C8144C988B005CBCA7 /* OpenGL.framework in Frameworks */,
+				39DCC886158C885C0055DF9F /* liblo.7.dylib in Frameworks */,
+				39DCC888158C885C0055DF9F /* libopencv_core.2.3.1.dylib in Frameworks */,
+				39DCC88A158C885C0055DF9F /* libopencv_imgproc.2.3.1.dylib in Frameworks */,
+				39DCC88C158C885C0055DF9F /* libOpenNI.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* head_pose_estimation_demo */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6859E8C029090F304C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+				392A391A143B35F400283A9F /* GLUT.framework */,
+				3992E3C7144C988B005CBCA7 /* OpenGL.framework */,
+				39DCC885158C885C0055DF9F /* liblo.7.dylib */,
+				39DCC887158C885C0055DF9F /* libopencv_core.2.3.1.dylib */,
+				39DCC889158C885C0055DF9F /* libopencv_imgproc.2.3.1.dylib */,
+				39DCC88B158C885C0055DF9F /* libOpenNI.dylib */,
+			);
+			name = head_pose_estimation_demo;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				39E6FA261449781600E82F68 /* gl_camera.hpp */,
+				392A3913143B35E200283A9F /* CRForestEstimator.cpp */,
+				392A3914143B35E200283A9F /* CRForestEstimator.h */,
+				392A3915143B35E200283A9F /* CRTree.cpp */,
+				392A3916143B35E200283A9F /* CRTree.h */,
+				392A390F143B35D300283A9F /* gl_camera.cpp */,
+				392A3910143B35D300283A9F /* main.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76F6C0486A84900D96B5E /* head_pose_estimation_demo */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6859E8C029090F304C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				C6859E8B029090EE04C91782 /* head_pose_estimation_demo.1 */,
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76F620486A84900D96B5E /* head_pose_estimation_demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "head_pose_estimation_demo" */;
+			buildPhases = (
+				8DD76F640486A84900D96B5E /* Sources */,
+				8DD76F660486A84900D96B5E /* Frameworks */,
+				8DD76F690486A84900D96B5E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = head_pose_estimation_demo;
+			productInstallPath = "$(HOME)/bin";
+			productName = head_pose_estimation_demo;
+			productReference = 8DD76F6C0486A84900D96B5E /* head_pose_estimation_demo */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "head_pose_estimation_demo" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* head_pose_estimation_demo */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DD76F620486A84900D96B5E /* head_pose_estimation_demo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76F640486A84900D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				392A3911143B35D300283A9F /* gl_camera.cpp in Sources */,
+				392A3912143B35D300283A9F /* main.cpp in Sources */,
+				392A3917143B35E200283A9F /* CRForestEstimator.cpp in Sources */,
+				392A3918143B35E200283A9F /* CRTree.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB923208733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					/usr/include/ni,
+					"/Users/matthias/_projekte/kinect/OpenNI/**",
+					"/Users/matthias/OpenCV-2.3.1/**",
+					"/Users/matthias/liblo-0.26/**",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/lib,
+					/usr/include/ni,
+					/usr/local/lib,
+					/opt/local/lib,
+					"\"$(SRCROOT)/../../../OpenCV-2.3.1/lib\"",
+					"\"$(SRCROOT)/..\"",
+					"\"$(SRCROOT)/../..\"",
+					"\"$(SRCROOT)/../../../OpenNI-Bin-Dev-MacOSX-v1.5.2.23/Lib\"",
+					"\"$(SRCROOT)/../../../OpenNI-Bin-Dev-MacOSX-v1.5.4.0/Lib\"",
+					"\"$(SRCROOT)/../../../OpenNI-Bin-Dev-MacOSX-v1.4.0.2/Lib\"",
+					"\"$(SRCROOT)/mac-libs\"",
+				);
+				OTHER_LDFLAGS = (
+					"-lOpenNI",
+					"-llo",
+				);
+				PRODUCT_NAME = head_pose_estimation_demo;
+			};
+			name = Debug;
+		};
+		1DEB923308733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					"/Users/matthias/OpenNI-Bin-Dev-MacOSX-v1.4.0.2/Include",
+					"/Users/matthias/OpenCV-2.3.1/modules/imgproc/include",
+					"/Users/matthias/liblo-0.26",
+					"/Users/matthias/OpenCV-2.3.1/modules/highgui/include",
+					"/Users/matthias/OpenCV-2.3.1/modules/core/include",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/mac-libs\"";
+				OTHER_LDFLAGS = "-OpenNI";
+				PRODUCT_NAME = head_pose_estimation_demo;
+				VALID_ARCHS = x86_64;
+			};
+			name = Release;
+		};
+		1DEB923608733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lglut",
+					"-lGLU",
+					"-lfreeglut",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB923708733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "head_pose_estimation_demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923208733DC60010E9CD /* Debug */,
+				1DEB923308733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "head_pose_estimation_demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923608733DC60010E9CD /* Debug */,
+				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}
