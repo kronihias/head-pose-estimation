@@ -13,10 +13,10 @@
 		392A3918143B35E200283A9F /* CRTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 392A3915143B35E200283A9F /* CRTree.cpp */; };
 		392A391B143B35F400283A9F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 392A391A143B35F400283A9F /* GLUT.framework */; };
 		3992E3C8144C988B005CBCA7 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3992E3C7144C988B005CBCA7 /* OpenGL.framework */; };
+		39D093BB15EBDBAE0005EBCC /* libfreenect.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39D092DC15EBCDBF0005EBCC /* libfreenect.dylib */; };
 		39DCC886158C885C0055DF9F /* liblo.7.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DCC885158C885C0055DF9F /* liblo.7.dylib */; };
 		39DCC888158C885C0055DF9F /* libopencv_core.2.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DCC887158C885C0055DF9F /* libopencv_core.2.3.1.dylib */; };
 		39DCC88A158C885C0055DF9F /* libopencv_imgproc.2.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DCC889158C885C0055DF9F /* libopencv_imgproc.2.3.1.dylib */; };
-		39DCC88C158C885C0055DF9F /* libOpenNI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DCC88B158C885C0055DF9F /* libOpenNI.dylib */; };
 		8DD76F6A0486A84900D96B5E /* head_pose_estimation_demo.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* head_pose_estimation_demo.1 */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +42,7 @@
 		392A3916143B35E200283A9F /* CRTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CRTree.h; path = ../../CRTree.h; sourceTree = SOURCE_ROOT; };
 		392A391A143B35F400283A9F /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		3992E3C7144C988B005CBCA7 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		39D092DC15EBCDBF0005EBCC /* libfreenect.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreenect.dylib; path = usr/local/lib/fakenect/libfreenect.dylib; sourceTree = SDKROOT; };
 		39DCC885158C885C0055DF9F /* liblo.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblo.7.dylib; path = "mac-libs/liblo.7.dylib"; sourceTree = SOURCE_ROOT; };
 		39DCC887158C885C0055DF9F /* libopencv_core.2.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.2.3.1.dylib; path = "mac-libs/libopencv_core.2.3.1.dylib"; sourceTree = SOURCE_ROOT; };
 		39DCC889158C885C0055DF9F /* libopencv_imgproc.2.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.2.3.1.dylib; path = "mac-libs/libopencv_imgproc.2.3.1.dylib"; sourceTree = SOURCE_ROOT; };
@@ -61,7 +62,7 @@
 				39DCC886158C885C0055DF9F /* liblo.7.dylib in Frameworks */,
 				39DCC888158C885C0055DF9F /* libopencv_core.2.3.1.dylib in Frameworks */,
 				39DCC88A158C885C0055DF9F /* libopencv_imgproc.2.3.1.dylib in Frameworks */,
-				39DCC88C158C885C0055DF9F /* libOpenNI.dylib in Frameworks */,
+				39D093BB15EBDBAE0005EBCC /* libfreenect.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +81,7 @@
 				39DCC887158C885C0055DF9F /* libopencv_core.2.3.1.dylib */,
 				39DCC889158C885C0055DF9F /* libopencv_imgproc.2.3.1.dylib */,
 				39DCC88B158C885C0055DF9F /* libOpenNI.dylib */,
+				39D092DC15EBCDBF0005EBCC /* libfreenect.dylib */,
 			);
 			name = head_pose_estimation_demo;
 			sourceTree = "<group>";
@@ -195,6 +197,7 @@
 					"\"$(SRCROOT)/../../../OpenNI-Bin-Dev-MacOSX-v1.5.4.0/Lib\"",
 					"\"$(SRCROOT)/../../../OpenNI-Bin-Dev-MacOSX-v1.4.0.2/Lib\"",
 					"\"$(SRCROOT)/mac-libs\"",
+					"\"$(SDKROOT)/usr/local/lib/fakenect\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lOpenNI",
@@ -211,6 +214,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				HEADER_SEARCH_PATHS = (
+					/Users/matthias/libfreenect/include,
 					"/Users/matthias/OpenNI-Bin-Dev-MacOSX-v1.4.0.2/Include",
 					"/Users/matthias/OpenCV-2.3.1/modules/imgproc/include",
 					"/Users/matthias/liblo-0.26",
@@ -219,7 +223,7 @@
 				);
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/mac-libs\"";
-				OTHER_LDFLAGS = "-OpenNI";
+				OTHER_LDFLAGS = "-freenect";
 				PRODUCT_NAME = head_pose_estimation_demo;
 				VALID_ARCHS = x86_64;
 			};

@@ -9,7 +9,7 @@ trees/new_
 #MS_radius
 5
 #Stride
-6
+8
 #MAX_distance
 1300
 #Head_Trheshold

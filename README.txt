@@ -3,6 +3,8 @@ kinect head pose estimation with OSC support
 
 Includes standalone version and pix_head_pose_estimation Pure Data/Gem external.
 
+Standaloe works with libfreenect, OpenNI or Microsoft Kinect SDK (Windows only)
+
 based on 
 Real Time Head Pose Estimation from Consumer Depth Cameras 
 by Gabriele Fanelli
@@ -68,6 +70,12 @@ Linux
 
 OSX
 -----------------
+
+-> use precompiled BINARIES! 
+	./head_pose_estimation_demo_freenect
+or	./head_pose_estimation_demo_openni
+
+for compilation:
 
 * you will need XCode to compile the demo application for OSX 
 
