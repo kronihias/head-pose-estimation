@@ -14,6 +14,9 @@ IF(WIN32)
 	SET( OPENCV_INCLUDES E:\\Documents\\Code\\libraries\\OpenCV-2.3.0\\include ) 
 	SET( OPENCV_LIB E:\\Documents\\Code\\libraries\\OpenCV-2.3.0\\lib ) 
 
+	SET( FREENECT_INCLUDES /home/matthias/libfreenect/include ) 
+	SET( FREENECT_LIB /home/matthias/libfreenect/build/lib )
+	
 	SET( OPENNI_INCLUDES E:\\Documents\\Code\\libraries\\OpenNI\\Include ) 
 	SET( OPENNI_LIB E:\\Documents\\Code\\libraries\\OpenNI\\Lib ) 
 
@@ -24,7 +27,11 @@ IF(WIN32)
 ELSE(WIN32)
 
 	SET( OPENCV_INCLUDES /usr/local/include ) 
-	SET( OPENCV_LIB /usr/local/lib ) 
+	SET( OPENCV_LIB /usr/local/lib )
+	
+	SET( FREENECT_INCLUDES /home/matthias/libfreenect/include ) 
+	SET( FREENECT_LIB /home/matthias/libfreenect/build/lib )
+	
 	SET( OPENNI_INCLUDES /home/matthias/OpenNI/Include ) 
 	SET( OPENNI_LIB /home/matthias/OpenNi_bin/Lib ) 
 	
@@ -32,19 +39,19 @@ ELSE(WIN32)
 	SET( LIBLO_LIB /usr/local/lib ) 
 
 	#assuming freeglut installed on linux
-	LINK_DIRECTORIES( ${OPENNI_LIB} ${OPENCV_LIB} ${LIBLO_LIB} )
+	LINK_DIRECTORIES( ${OPENNI_LIB} ${OPENCV_LIB} ${LIBLO_LIB} ${FREENECT_LIB} )
 
 ENDIF(WIN32)
 	
-INCLUDE_DIRECTORIES( . .. ${OPENNI_INCLUDES} ${OPENCV_INCLUDES} ${LIBLO_INCLUDES} )
+INCLUDE_DIRECTORIES( . .. ${OPENNI_INCLUDES} ${OPENCV_INCLUDES} ${LIBLO_INCLUDES} ${FREENECT_INCLUDES} )
 
 	
 add_executable( ../head_pose_estimation_demo ${HEAD_DEMO})
 
 
 IF(WIN32)
-target_link_libraries (../head_pose_estimation_demo opencv_core opencv_highgui opencv_imgproc OpenNI freeglut lo)
+target_link_libraries (../head_pose_estimation_demo opencv_core opencv_highgui opencv_imgproc freenect freeglut lo)
 ELSE(WIN32)
-target_link_libraries (../head_pose_estimation_demo opencv_core opencv_highgui opencv_imgproc OpenNI GLU glut lo)
+target_link_libraries (../head_pose_estimation_demo opencv_core opencv_highgui opencv_imgproc freenect GLU glut lo)
 ENDIF(WIN32)
 
