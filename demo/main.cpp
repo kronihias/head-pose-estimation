@@ -12,6 +12,10 @@
 */
 
 //#define USE_MS_SKD false
+//#define USE_OPENNI true
+#define USE_LIBFREENECT true
+
+#define LIBLO
 
 #include <string>
 #include <algorithm>
@@ -19,20 +23,8 @@
 #include <vector>
 #include "freeglut.h"
 
-#ifndef USE_MS_SKD
-	#include <XnOS.h>
-	#include <XnCppWrapper.h>
-	#include <XnCodecIDs.h>
-	using namespace xn;
-#else
-	#include <d2d1.h>
-	#include "NuiApi.h"
-	//#include "DepthBasics.h"
-#endif
 
-#include "../CRForestEstimator.h"
-#include "gl_camera.hpp"
-
+#ifdef LIBLO
 // OSC added by Matthias Kronlachner
 #include <lo/lo.h> // OSC
 char *ADDRESS = "127.0.0.1";
@@ -41,6 +33,26 @@ lo_address addr;
 #define OUTPUT_BUFFER_SIZE 1024*16
 char osc_buffer[OUTPUT_BUFFER_SIZE];
 char tmp[50]; //Temp buffer for OSC address pattern
+#endif
+
+#ifdef USE_OPENNI
+	#include <XnOS.h>
+	#include <XnCppWrapper.h>
+	#include <XnCodecIDs.h>
+	using namespace xn;
+#endif
+#ifdef USE_MS_SDK
+	#include <d2d1.h>
+	#include "NuiApi.h"
+	//#include "DepthBasics.h"
+#endif
+#ifdef USE_LIBFREENECT
+#include "libfreenect.h"
+#include <pthread.h>
+#endif
+
+#include "../CRForestEstimator.h"
+#include "gl_camera.hpp"
 
 bool show_visual = TRUE;
 bool send_osc = TRUE;
@@ -85,18 +97,36 @@ int g_im_h = 480;
 //kinect's frame rate
 int g_fps = 30;
 
-#ifndef USE_MS_SKD
+#ifdef USE_OPENNI
 	XnUInt64 g_focal_length;
 	XnDouble g_pixel_size;
 	xn::Context g_Context;
 	xn::DepthGenerator g_DepthGenerator;
 	DepthMetaData g_depthMD;
 	XnStatus g_RetVal;
-#else
+#endif
+
+#ifdef USE_MS_SKD
     INuiSensor*             g_pNuiSensor;
 	HANDLE                  g_pDepthStreamHandle;
     HANDLE                  g_hNextDepthFrameEvent;
 #endif
+
+#ifdef USE_LIBFREENECT
+	uint16_t *depth_mid, *depth_front;
+	freenect_context *f_ctx;
+	freenect_device *f_dev;
+	int freenect_angle = 0;
+	int freenect_led;
+
+	volatile int die = 0;
+	pthread_t freenect_thread;
+	pthread_mutex_t gl_backbuf_mutex = PTHREAD_MUTEX_INITIALIZER;
+	pthread_cond_t gl_frame_cond = PTHREAD_COND_INITIALIZER;
+	int got_depth = 0;
+#endif
+
+bool kill = false;
 
 bool g_first_rigid = true;
 bool g_show_votes = false;
@@ -112,6 +142,47 @@ std::vector< Vote > g_votes; //all votes returned by the forest
 
 math_vector_3f g_face_curr_dir, g_face_dir(0,0,-1);
 
+#ifdef USE_LIBFREENECT
+void depth_cb(freenect_device *dev, void *v_depth, uint32_t timestamp)
+{
+	int i;
+	uint16_t *depth = (uint16_t*)v_depth;
+	
+	pthread_mutex_lock(&gl_backbuf_mutex);
+	for (i=0; i<640*480; i++) {		
+		depth_mid[i] = depth[i];
+	}
+	got_depth++;
+	pthread_cond_signal(&gl_frame_cond);
+	pthread_mutex_unlock(&gl_backbuf_mutex);
+}
+
+void *freenect_threadfunc(void *arg)
+{
+	
+	// freenect_set_tilt_degs(f_dev,freenect_angle);
+	freenect_set_led(f_dev,LED_RED);
+	freenect_set_depth_callback(f_dev, depth_cb);
+	
+	freenect_set_depth_mode(f_dev, freenect_find_depth_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_DEPTH_MM));
+	
+	freenect_start_depth(f_dev);
+	
+	while (!die && freenect_process_events(f_ctx) >= 0) {
+		
+	}
+	
+	printf("\nshutting down streams...\n");
+	
+	freenect_stop_depth(f_dev);
+	
+	freenect_close_device(f_dev);
+	freenect_shutdown(f_ctx);
+	
+	printf("-- done!\n");
+	return NULL;
+}
+#endif
 
 void drawCylinder( const math_vector_3f& p1, const math_vector_3f& p2 , float radius, GLUquadric *quadric)
 {
@@ -187,7 +258,9 @@ bool initialize(){
 	else
         return false;
 	
-#else
+#endif
+
+#ifdef USE_OPENNI
 
 	// Initialize context object
 	g_RetVal = g_Context.Init();
@@ -211,9 +284,49 @@ bool initialize(){
 		printf("Failed starting generating all %s\n", xnGetStatusString(g_RetVal));
 		return false;
 	}
-
 #endif
 
+#ifdef USE_LIBFREENECT
+  depth_mid = (uint16_t*)malloc(640*480*2);
+  depth_front = (uint16_t*)malloc(640*480*2);
+
+	if (freenect_init(&f_ctx, NULL) < 0) {
+		printf("freenect_init() failed\n");
+		return 1;
+	}
+	
+	freenect_set_log_level(f_ctx, FREENECT_LOG_ERROR);
+	freenect_select_subdevices(f_ctx, (freenect_device_flags)(FREENECT_DEVICE_MOTOR | FREENECT_DEVICE_CAMERA));
+	
+	int nr_devices = freenect_num_devices (f_ctx);
+	printf ("Number of devices found: %d\n", nr_devices);
+	
+	int user_device_number = 0;
+	
+	if (nr_devices < 1) {
+		freenect_shutdown(f_ctx);
+		return false;
+	}
+	
+	if (freenect_open_device(f_ctx, &f_dev, user_device_number) < 0) {
+		printf("Could not open device\n");
+		freenect_shutdown(f_ctx);
+		return false;
+	}
+	
+	bool res = pthread_create(&freenect_thread, NULL, freenect_threadfunc, NULL);
+	if (res) {
+		printf("pthread_create failed\n");
+		freenect_shutdown(f_ctx);
+		return false;
+	}
+	freenect_raw_tilt_state state;
+	freenect_get_tilt_status(&state);
+	
+	freenect_angle = freenect_get_tilt_degs(&state);
+	
+#endif
+	
 	g_im3D.create(g_im_h,g_im_w,CV_32FC3);
 	g_imD.create(g_im_h,g_im_w,CV_16UC1);
 
@@ -344,8 +457,8 @@ bool read_data( ){
 		}
 	}
 
-#else
-
+#endif
+#ifdef USE_OPENNI
 	// Wait for new data to be available
 	g_RetVal = g_Context.WaitAndUpdateAll();
 	if (g_RetVal != XN_STATUS_OK)
@@ -358,10 +471,24 @@ bool read_data( ){
 	g_DepthGenerator.GetMetaData(g_depthMD);
 
 #endif
+#ifdef USE_LIBFREENECT
+	
+	uint16_t *tmp;
+	
+	if (got_depth) {
+		tmp = depth_front;
+		depth_front = depth_mid;
+		depth_mid = tmp;
+		got_depth = 0;
+	} else {
+		return false; //?? 
+	}
+#endif
 
 	int valid_pixels = 0;
 	float d = 0.f;
-
+	
+	int ii = 0;
 	//generate 3D image
 	for(int y = 0; y < g_im3D.rows; y++)
 	{
@@ -370,10 +497,14 @@ bool read_data( ){
 
 #ifdef USE_MS_SKD
 			d = float( g_imD.at<int16_t>(y,x) );
-#else
+#endif
+#ifdef USE_OPENNI
 			d = (float)g_depthMD(x,y);
 #endif
-
+#ifdef USE_LIBFREENECT
+			d = (float)depth_mid[ii++];
+#endif
+			
 			if ( d < g_max_z && d > 0 ){
 
 				valid_pixels++;
@@ -458,7 +589,7 @@ bool process() {
 								);
 
 		// OSC by Matthias Kronlachner
-		
+		#ifdef LIBLO
 		if (send_osc)
 		{
 			for(unsigned int i=0;i<g_means.size();++i) {
@@ -471,11 +602,12 @@ bool process() {
 				float roll = g_means[i][5];
 			
 				//cout << "user: " << i << "pitch: " << pitch << " yaw: " << yaw << " roll: " << roll << endl;
-			
+
 				lo_send(addr,"/head_pose", "fffffff", (float)i, x, y, z, pitch, yaw, roll);
+				
 			}
 		}
-		
+		#endif
 
 		//if(g_means.size()>0)
 		//	cout << g_means[0][0] << " " << g_means[0][1] << " " << g_means[0][2] << endl;
@@ -487,7 +619,7 @@ bool process() {
 }
 
 // ##############################################################################
-void key(unsigned char _k, int, int) {
+void key(int _k, int, int) {
 
 	switch(_k) {
 
@@ -543,7 +675,15 @@ void key(unsigned char _k, int, int) {
 			cout << "head threshold : " << g_th << endl;
 			break;
 		}
-
+			
+		case 'q':{
+			
+			//kill = true;
+			printf("Goodbye..... \n");
+			exit (0);
+			break;
+		}
+			
 		case 'h':{
 
 			printf("\nAvailable commands:\n");
@@ -559,11 +699,34 @@ void key(unsigned char _k, int, int) {
 
 			printf("\t '*' : increase head threshold \n");
 			printf("\t '/' : decrease head threshold \n");
-
+			
+			printf("\t 'q' : exit application \n");
+			
+			#ifdef USE_LIBFREENECT
+			printf("\t 'up arrow' : tilt kinect + \n");
+			printf("\t 'down arrow' : tilt kinect - \n");
+			#endif
 			break;
 
 		}
-
+#ifdef USE_LIBFREENECT
+		case 101:{
+			if (++freenect_angle > 30)
+			{
+				freenect_angle = 30;
+			}
+			freenect_set_tilt_degs(f_dev,freenect_angle);
+			break;
+		}
+		case 103:{
+			if (--freenect_angle < -30)
+			{
+				freenect_angle = -30;
+			}
+			freenect_set_tilt_degs(f_dev,freenect_angle);
+			break;
+		}
+#endif
 	default:
 		break;
 
@@ -617,9 +780,9 @@ void mb(int button, int state, int x, int y)
 }
 
 void idle(){
-
-	process();
-	g_frame_no++;
+	
+		process();
+		g_frame_no++;
 
 }
 
@@ -843,6 +1006,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	#ifdef LIBLO
 	// OSC by Matthias Kronlachner
 	if (send_osc)
 	{
@@ -855,6 +1019,7 @@ int main(int argc, char* argv[])
 		addr = lo_address_new(ADDRESS, PORT);
 		printf("Configured to send OSC messages to %s:%s\n", ADDRESS, PORT);
 	}
+	#endif
 
 	
 
@@ -868,14 +1033,14 @@ int main(int argc, char* argv[])
 		glutDisplayFunc(draw);
 		glutMouseFunc(mb);
 		glutMotionFunc(mm);
-		glutKeyboardFunc(key);
+		glutSpecialFunc(key);
 		glutReshapeFunc(resize);
 		glutIdleFunc(idle);
 		glutMainLoop();
 	}
 	else{
 
-		while(1){
+		while(!kill){
 
 			process();
 
