@@ -62,7 +62,7 @@ pix_head_pose_estimation :: pix_head_pose_estimation()
 		// TREES
 		
 		g_ntrees = 10;
-		g_treepath = "/Users/matthias/head_pose_estimation_osc_2/pix_head_pose_estimation/trees/new_";
+		g_treepath = "./trees/new_";
 		m_maxv = 500.0;
 		m_larger_radius_ratio = 1.4;
 		m_smaller_radius_ratio = 5.0;
@@ -78,8 +78,7 @@ pix_head_pose_estimation :: pix_head_pose_estimation()
 		g_Estimate =  new CRForestEstimator();
 		if( !g_Estimate->load_forest(g_treepath.c_str(), g_ntrees) ){
 
-			post("could not read forest!");
-			exit;
+			post("could not read forest! \n");
 		}
 		
 		// creade 3d images

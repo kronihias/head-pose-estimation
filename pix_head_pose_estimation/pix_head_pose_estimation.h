@@ -40,7 +40,11 @@ DESCRIPTION
     "ft1" - Set all thresholds to one value
    
 -----------------------------------------------------------------*/
+#ifdef _WIN32
+class GEM_EXPORT pix_head_pose_estimation : public GemPixObj
+#else
 class GEM_EXTERN pix_head_pose_estimation : public GemPixObj
+#endif
 {
     CPPEXTERN_HEADER(pix_head_pose_estimation, GemPixObj);
 
