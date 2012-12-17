@@ -29,7 +29,7 @@ void node::write( std::ofstream& os ){
 	if(leaf_set){
 
 		os << leaf.p << " " << leaf.trace << " ";
-		for (uint i=0;i<POSE_SIZE;++i)
+		for (usint i=0;i<POSE_SIZE;++i)
 			os << leaf.mean(i) << " ";
 		os << endl;
 
@@ -61,7 +61,7 @@ bool node::read( std::ifstream& is ){
 
 		is >> leaf.p >> leaf.trace;
 		leaf.mean.create(POSE_SIZE,1);
-		for (uint i=0;i<POSE_SIZE;++i)
+		for (usint i=0;i<POSE_SIZE;++i)
 			is >> leaf.mean(i);
 
 	}

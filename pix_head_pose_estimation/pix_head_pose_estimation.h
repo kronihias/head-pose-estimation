@@ -17,6 +17,7 @@ WARRANTIES, see the file, "GEM.LICENSE.TERMS" in this distribution.
 #define _INCLUDE__GEM_PIXES_pix_head_pose_estimation_H_
 
 #include "Base/GemPixObj.h"
+#include "Gem/Settings.h"
 
 using namespace std;
 using namespace cv;

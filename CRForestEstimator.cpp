@@ -74,7 +74,7 @@ bool CRForestEstimator::load_forest( const std::string& path,
 			return false;
 
 		crForest[t] = tree;
-		cout << "loaded " << buffer << endl;
+		printf ("loaded %s\n", buffer);
 
 	}
 
@@ -218,7 +218,7 @@ void CRForestEstimator::do_regression( const Mat & im3D, int stride, float max_v
 
 				if( pp >= .9f ){ //&& var < max_variance ){ //v_count >= leaves.size()/2 ){
 
-					for(uint v=0;v<temp_votes.size();++v )
+					for(usint v=0;v<temp_votes.size();++v )
 						if ( *(temp_votes[v].trace) < max_variance && *(temp_votes[v].conf) >= prob_th )
 							votes.push_back( temp_votes[v] );
 
@@ -374,8 +374,8 @@ void CRForestEstimator::estimate( const Mat & im3D,
 
 	}
 
-	uint max_iters = 10;
-	uint max_sub_clusters = 8;
+	usint max_iters = 10;
+	usint max_sub_clusters = 8;
 
 	//timeval c_time;
 	//gettimeofday( &c_time, NULL );
@@ -410,7 +410,7 @@ void CRForestEstimator::estimate( const Mat & im3D,
 		//initialize clusters on random votes
 		for(unsigned int sc=0;sc<max_sub_clusters;++sc){
 
-			uint vote_idx = cluster_inits( sc );
+			usint vote_idx = cluster_inits( sc );
 
 			sub_clusters[sc].clear();
 			if(sc==0)
@@ -507,11 +507,11 @@ void CRForestEstimator::estimate( const Mat & im3D,
 
 	sort(c_index.begin(), c_index.end());
 	if(verbose)
-		for(uint y=0;y<c_index.size();++y)
+		for(usint y=0;y<c_index.size();++y)
 			cout << c_index[y].index << " " << c_index[y].val << endl;
 
 
-	for( uint c = 0; c < MIN( temp_clusters.size() , max_no_faces ); ++c){
+	for( usint c = 0; c < MIN( temp_clusters.size() , max_no_faces ); ++c){
 
 		int max_index = c_index[c_index.size()-1-c].index;
 

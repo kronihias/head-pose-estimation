@@ -17,7 +17,7 @@
 #define AVG_FACE_DIAMETER 236.4f
 #define AVG_FACE_DIAMETER2 55884.96f
 #define YAW_RANGE 190.f
-#define uint unsigned int
+#define usint unsigned int
 
 // Structure for the leafs
 class leaf_data {

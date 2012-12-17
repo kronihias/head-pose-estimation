@@ -15,11 +15,12 @@
 /////////////////////////////////////////////////////////
 
 
-#include <string>
+//#include <string>
 #include <algorithm>
 //#include <iostream>
-#include <vector>
-
+//#include <vector>
+#include "Gem/Exception.h"
+//#include "m_pd.h"
 #include "../CRForestEstimator.h"
 
 #include "pix_head_pose_estimation.h"
@@ -44,6 +45,30 @@ Mat g_im3D;
 std::vector< cv::Vec<float,POSE_SIZE> > g_means; //outputs
 std::vector< std::vector< const Vote* > > g_clusters; //full clusters of votes
 std::vector< Vote > g_votes; //all votes returned by the forest
+
+
+// used for finding external path
+// taken from mrpeach/which
+#ifdef __FreeBSD__
+static char sys_dllextent[] = ".b_i386", sys_dllextent2[] = ".pd_freebsd";
+#endif
+#ifdef __linux__
+#ifdef __x86_64__
+static char sys_dllextent[] = ".l_ia64", sys_dllextent2[] = ".pd_linux";
+#else
+static char sys_dllextent[] = ".l_i386", sys_dllextent2[] = ".pd_linux";
+#endif
+#endif
+#ifdef __APPLE__
+#ifndef MACOSX3
+static char sys_dllextent[] = ".d_fat", sys_dllextent2[] = ".pd_darwin";
+#else
+static char sys_dllextent[] = ".d_ppc", sys_dllextent2[] = ".pd_darwin";
+#endif
+#endif
+#ifdef _WIN32
+static char sys_dllextent[] = ".m_i386", sys_dllextent2[] = ".dll";
+#endif
 
 /////////////////////////////////////////////////////////
 //
@@ -74,15 +99,41 @@ pix_head_pose_estimation :: pix_head_pose_estimation()
 		
 		m_im_w = 640;
 		m_im_h = 480;
-		
-		g_Estimate =  new CRForestEstimator();
-		if( !g_Estimate->load_forest(g_treepath.c_str(), g_ntrees) ){
 
-			post("could not read forest! \n");
+    // get external path for loading tree
+    // taken from mrpeach/which
+    int     fd = -1, result = 0;
+    char    *nameptr = 0;
+    char dirbuf[MAXPDSTRING];
+    
+    fd = canvas_open(canvas_getcurrent(), "pix_head_pose_estimation", sys_dllextent,
+                     dirbuf, &nameptr, MAXPDSTRING, 1);
+    if (fd < 0)
+    {/* same, with the more generic sys_dllextent2 */
+        fd = canvas_open(canvas_getcurrent(), "pix_head_pose_estimation", sys_dllextent2,
+                         dirbuf, &nameptr, MAXPDSTRING, 1);
+    }
+    if (fd < 0)
+    {
+        throw(GemException("error reading folder! \n"));
+    }
+    
+    result = close(fd);
+    
+    strcat(dirbuf, "/trees/new_");
+    post("reading trees from: %s",dirbuf);
+    
+    
+        g_Estimate =  new CRForestEstimator();
+		if( !g_Estimate->load_forest(dirbuf, g_ntrees) ){
+            throw(GemException("could not read forest! \n"));
 		}
 		
+    
 		// creade 3d images
 		g_im3D.create(m_im_h,m_im_w,CV_32FC3);
+    
+    post ("created 3d image");
 		
 }
 
@@ -99,7 +150,7 @@ pix_head_pose_estimation :: ~pix_head_pose_estimation()
 /////////////////////////////////////////////////////////
 void pix_head_pose_estimation :: processRGBAImage(imageStruct &image)
 {
-  // Read Data  
+  // Read Data
 	int datasize = image.xsize * image.ysize;
 
     unsigned char *base = image.data;
@@ -137,7 +188,8 @@ void pix_head_pose_estimation :: processRGBAImage(imageStruct &image)
 		g_means.clear();
 		g_votes.clear();
 		g_clusters.clear();
-		
+
+    
 		//do the actual estimation
 		g_Estimate->estimate(g_im3D,
 									g_means,
@@ -152,10 +204,10 @@ void pix_head_pose_estimation :: processRGBAImage(imageStruct &image)
 									m_th
 								);
 
-		// Output Data
+            // Output Data
 			for(unsigned int i=0;i<g_means.size();++i) {
 				
-				t_atom ap[4];
+				t_atom ap[7];
 				SETFLOAT (ap+0, i); // id
 				SETFLOAT (ap+1, g_means[i][0]); // x
 				SETFLOAT (ap+2, g_means[i][1]); // y
@@ -164,7 +216,6 @@ void pix_head_pose_estimation :: processRGBAImage(imageStruct &image)
 				SETFLOAT (ap+5, g_means[i][4]); // yaw
 				SETFLOAT (ap+6, g_means[i][5]); // roll
 				
-
 				outlet_anything(m_dataout, gensym("head_pose"), 7, ap);
 			}
 
